@@ -1,7 +1,5 @@
-import os
 
-# Define the content for the README.md based on the provided script logic
-readme_content = """# Open Source Project Management System
+# Open Source Project Management System
 
 A Python-based utility designed to manage open-source project metadata, track contributors, and organize issue reports. This system automates the generation of project reports and CSV data exports for streamlined project oversight.
 
