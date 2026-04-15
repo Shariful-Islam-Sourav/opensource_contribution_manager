@@ -3,6 +3,10 @@
 
 A Python-based utility designed to manage open-source project metadata, track contributors, and organize issue reports. This system automates the generation of project reports and CSV data exports for streamlined project oversight.
 
+For detailed technical documentation, see:
+
+👉 [Project Documentation](/DOCUMENTATION.md)
+
 ## Features
 
 - **Project Metadata Tracking**: Securely stores project name, version, start year, and leadership info using immutable tuples.
