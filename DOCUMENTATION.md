@@ -1,272 +1,474 @@
-# 📘 Project Documentation
+# Documentation
 
 ## Open Source Project Manager CLI
 
 ---
 
-## 1. 📌 Overview
+## 1. 🧠 Program Overview (Execution Model)
 
-This project is a **Command-Line Interface (CLI) application** built in Python that simulates the management of an open-source project. It allows users to:
+The script follows a **top-to-bottom procedural execution**:
 
-* Store project details
-* Manage contributors
-* Track and analyze issues
-* Perform data operations using Python structures
-* Generate reports and CSV files
-
----
-
-## 2. 🎯 Objectives
-
-The main goals of this project are:
-
-* Demonstrate Python core concepts:
-
-  * Tuples
-  * Lists
-  * Dictionaries
-  * Sets
-* Implement file handling operations
-* Practice structured data manipulation
-* Simulate real-world project workflows
-
----
-
-## 3. 🧱 System Architecture
-
-The application is divided into **four main sections**:
-
-### 🔹 Section 1: Project & Contributor Management
-
-* Collects project information
-* Stores data in a tuple (immutable)
-* Registers contributors using dictionaries inside a list
-* Performs:
-
-  * Sorting
-  * Slicing
-  * Dictionary updates
-
----
-
-### 🔹 Section 2: Issue Tracking System
-
-* Stores issues as dictionaries in a list
-* Tracks:
-
-  * ID, Title, Type, Priority, Reporter, Status
-* Performs:
-
-  * Counting open issues
-  * Updating priorities
-  * Grouping by status
-  * Finding top reporter
-
----
-
-### 🔹 Section 3: File Handling
-
-* Creates project directory
-* Generates:
-
-  * `project_report.txt`
-  * `issues.csv`
-* Supports:
-
-  * Writing files
-  * Reading using:
-
-    * `read()`
-    * `readline()`
-    * `readlines()`
-
----
-
-### 🔹 Section 4: Bonus Features
-
-* Extracts urgent issues (Critical/High)
-* Appends urgent issues to report file
-* Displays last lines of report
-
----
-
-## 4. 📊 Data Structures Used
-
-### 🟢 Tuple
-
-* Stores project information
-* Immutable (ensures data integrity)
-
-### 🔵 List
-
-* Stores:
-
-  * Contributors
-  * Issues
-* Supports indexing, slicing, iteration
-
-### 🟡 Dictionary
-
-* Represents:
-
-  * Contributor data
-  * Issue data
-* Key operations:
-
-  * `get()`
-  * `update()`
-  * `copy()`
-  * `pop()`
-
-### 🔴 Set
-
-* Used for:
-
-  * Unique reporters
-  * Tech stack
-* Operations:
-
-  * Union
-  * Intersection
-  * Difference
-
----
-
-## 5. ⚙️ Functional Workflow
-
-### Step 1: Project Initialization
-
-* User inputs project details
-* Data stored in tuple
-
----
-
-### Step 2: Contributor Registration
-
-* User enters 4 contributors
-* Data stored in list of dictionaries
-* Names extracted and sorted
-
----
-
-### Step 3: Issue Registration
-
-* User enters 5 issues
-* Data stored in list of dictionaries
-
----
-
-### Step 4: Data Processing
-
-* Count open issues
-* Identify top reporter
-* Group issues by status
-* Count priorities
-
----
-
-### Step 5: File Generation
-
-* Create folder using project name
-* Save:
-
-  * Summary report (TXT)
-  * Issues data (CSV)
-
----
-
-### Step 6: File Reading
-
-* Display contents using different read methods
-* Filter high/critical issues
-
----
-
-## 6. 📁 File Structure
-
+```text
+Input → Store → Process → Analyze → Save → Read → Output
 ```
-project_name/
-│── task_5.py
-│── project_report.txt
-│── issues.csv
+
+There are **no functions or classes**, so all logic executes sequentially in the global scope.
+
+---
+
+## 2. 🔹 Section 1: Project Initialization
+
+### Code
+
+```python
+p_name = input("Enter project name: ")
+p_version = input("Enter project version: ")
+p_year = int(input("Enter year started: "))
+p_lang = input("Enter main programming language: ")
+p_lead = input("Enter your name (Project Lead): ")
+
+project = (p_name, p_version, p_year, p_lang, p_lead)
+```
+
+### Explanation
+
+* User input is collected using `input()`
+* `p_year` is explicitly cast to `int` → ensures numeric data type
+* All values are grouped into a **tuple**
+
+### Why Tuple?
+
+```python
+project = (name, version, year, language, lead)
+```
+
+* Immutable → cannot be changed later
+* Suitable for **fixed project metadata**
+
+---
+
+### Tuple Operations
+
+```python
+project[:3]
+project.count(p_lang)
+project.index(p_lang)
+```
+
+* `[:3]` → slicing (first 3 elements)
+* `count()` → counts occurrences
+* `index()` → returns position
+
+---
+
+## 3. Section 1: Contributor Management
+
+### Data Structure
+
+```python
+contributors = []
+```
+
+Each contributor is stored as:
+
+```python
+contrib_dict = {
+    'name': c_name,
+    'role': c_role,
+    'language': c_lang,
+    'commits': c_commits,
+    'country': c_country
+}
 ```
 
 ---
 
-## 7. 🧪 Error Handling
+### Key Logic
 
-The project uses basic exception handling:
+#### 1. Adding Contributors
 
-* `IOError` → File writing issues
-* `FileNotFoundError` → File reading issues
+```python
+for i in range(4):
+    contributors.append(contrib_dict)
+```
 
----
-
-## 8. 📈 Output Details
-
-### 📄 project_report.txt
-
-Contains:
-
-* Project info
-* Contributor count
-* Issue count
-* Top reporter
-* Urgent issues
+* Fixed loop → exactly 4 contributors
+* Each iteration creates a new dictionary
 
 ---
 
-### 📊 issues.csv
+#### 2. Extracting & Sorting Names
 
-Contains:
+```python
+names = []
+for c in contributors:
+    extracted_name = c['name']
+    names.append(extracted_name)
+    names.sort()
+```
 
-* id
-* title
-* priority
-* reporter
-* status
+⚠️ Important detail:
+
+* `names.sort()` is inside loop → sorting happens **every iteration**
+* Inefficient but works
+
+Better version:
+
+```python
+names = [c['name'] for c in contributors]
+names.sort()
+```
 
 ---
 
-## 9. ⚠️ Limitations
+#### 3. List Slicing
 
-* No persistent storage (data resets after run)
+```python
+first_two = names[:-2]
+```
+
+* If 4 elements:
+
+  * `[:-2]` → first 2 elements
+* Uses **negative indexing**
+
+---
+
+#### 4. Dictionary Update
+
+```python
+c.update({'status': 'Active'})
+```
+
+* Adds new key-value pair dynamically
+
+---
+
+#### 5. Safe Access & Copy
+
+```python
+contributors[0].get('status')
+backup_contributor = contributors[0].copy()
+```
+
+* `get()` → avoids KeyError
+* `copy()` → shallow copy (important for backup)
+
+---
+
+## 4. 🔹 Section 2: Issue Tracking
+
+### Data Structure
+
+```python
+issues = []
+```
+
+Each issue:
+
+```python
+issue_dict = {
+    'id': i_id,
+    'title': i_title,
+    'type': i_type,
+    'priority': i_priority,
+    'reporter': i_reporter,
+    'status': i_status
+}
+```
+
+---
+
+### Key Operations
+
+#### 1. Counting Open Issues
+
+```python
+open_count = 0
+for issue in issues:
+    if issue['status'] == 'Open':
+        open_count += 1
+```
+
+* Simple counter pattern
+* Time complexity: **O(n)**
+
+---
+
+#### 2. Updating First Issue
+
+```python
+issues[0]['priority'] = 'Critical'
+```
+
+* Direct dictionary mutation
+
+---
+
+#### 3. List Slicing
+
+```python
+issues[-2:]
+```
+
+* Gets last 2 elements
+
+---
+
+## 5. 🔹 Section 2: Set Operations
+
+### Creation
+
+```python
+reporters = {issue['reporter'] for issue in issues}
+tech_stack = {c['language'] for c in contributors}
+```
+
+* Uses **set comprehension**
+* Automatically removes duplicates
+
+---
+
+### Operations
+
+```python
+tech_stack.add('Docker')
+combined_set = tech_stack.union(reporters)
+tech_stack.discard('Java')
+common_items = tech_stack.intersection(reporters)
+diff_reporters = reporters.difference(tech_stack)
+```
+
+| Operation        | Meaning        |
+| ---------------- | -------------- |
+| `add()`          | insert element |
+| `union()`        | combine sets   |
+| `intersection()` | common values  |
+| `difference()`   | unique values  |
+| `discard()`      | remove safely  |
+
+---
+
+## 6. 🔹 Section 2: Priority Counting
+
+### Code
+
+```python
+priority_count = {}
+for issue in issues:
+    p = issue['priority']
+    if p in priority_count:
+        priority_count[p] += 1
+    else:
+        priority_count[p] = 1
+```
+
+###  Explanation
+
+* Manual frequency counting
+* Equivalent to `Counter` (but implemented manually)
+
+---
+
+## 7. 🔹 Section 2: Status Grouping
+
+```python
+status_groups = {}
+for issue in issues:
+    s = issue['status']
+    t = issue['title']
+    if s in status_groups:
+        status_groups[s].append(t)
+    else:
+        status_groups[s] = [t]
+```
+
+### Logic
+
+* Groups issue titles by status
+* Output example:
+
+```python
+{
+  "Open": ["Bug 1", "Bug 2"],
+  "Resolved": ["Fix 1"]
+}
+```
+
+---
+
+## 8. 🔹 Section 2: Top Reporter Logic
+
+```python
+reporter_counts = {}
+for issue in issues:
+    r = issue['reporter']
+    if r in reporter_counts:
+        reporter_counts[r] += 1
+    else:
+        reporter_counts[r] = 1
+```
+
+Then:
+
+```python
+for rep, count in reporter_counts.items():
+    if count > highest_count:
+        highest_count = count
+        top_reporter = rep
+```
+
+###  Explanation
+
+* First loop → count reports
+* Second loop → find max manually
+* No built-in functions used
+
+---
+
+## 9. 🔹 Dictionary Mutation (pop)
+
+```python
+popped_type = issues[0].pop('type')
+```
+
+* Removes `'type'` key permanently
+* Returns removed value
+
+---
+
+## 10. 🔹 Section 3: File Handling
+
+### Directory Creation
+
+```python
+folder_name = project[0].lower().replace(" ", "_")
+os.makedirs(folder_name)
+```
+
+* Converts project name → folder-safe format
+
+---
+
+### Writing Files
+
+#### TXT File
+
+```python
+with open(report_path, 'w') as f:
+    f.write(...)
+```
+
+#### CSV File
+
+```python
+f.write("id,title,priority,reporter,status\n")
+```
+
+* Manual CSV writing (no `csv` module used)
+
+---
+
+### Safe Access
+
+```python
+iss.get('id', '')
+```
+
+* Prevents crash if key missing
+
+---
+
+## 11. 🔹 File Reading
+
+### Methods Used
+
+```python
+f.read()
+f.readline()
+f.readlines()
+```
+
+### Filtering Example
+
+```python
+if 'Critical' in line or 'High' in line:
+```
+
+* String-based filtering
+
+---
+
+## 12. 🔹 Final Summary Output
+
+Prints aggregated data:
+
+```python
+print(f"Issues: {len(issues)} Open: {open_count}")
+```
+
+* Combines multiple computed values
+
+---
+
+## 13. 🔹 Bonus: List Comprehension
+
+```python
+urgent = [i['title'] for i in issues if i['priority'] in ['Critical', 'High']]
+```
+
+### 🔍 Explanation
+
+* Compact loop + condition
+* More efficient and readable
+
+---
+
+## 14.  Code Design Limitations
+
+* No functions → poor modularity
 * No input validation
-* Fixed number of contributors/issues
-* CLI-only interface
-* No database integration
+* Repetitive loops
+* Hardcoded limits (4 contributors, 5 issues)
 
 ---
 
-## 10. 🚀 Future Improvements
+## 15. Suggested Refactoring
 
-* Add database (SQLite / MongoDB)
-* Convert to web app (Flask / Django / MERN)
-* Add input validation
-* Dynamic number of contributors/issues
-* Add search and filtering
-* Build GUI version
+### Convert into Functions
 
----
+Example:
 
-## 11. 🧠 Learning Outcomes
-
-After completing this project, a developer understands:
-
-* Data structure usage in real scenarios
-* File handling in Python
-* CLI application design
-* Basic data analysis logic
-* Structured programming practices
+```python
+def count_open_issues(issues):
+    return sum(1 for i in issues if i['status'] == 'Open')
+```
 
 ---
 
-## 12. 👨‍💻 Author
+### Use Built-ins
 
-Project Lead: Shariful Islam Sourav
+```python
+from collections import Counter
+Counter(issue['priority'] for issue in issues)
+```
 
 ---
 
-## 13. 📜 Conclusion
+### Use CSV Module
 
-This project serves as a **foundational mini-system** that mimics real-world project management workflows while reinforcing Python fundamentals. It is ideal for beginners transitioning into intermediate-level programming.
+```python
+import csv
+```
+
+---
+
+## 16. 🧠 Key Takeaways
+
+* Shows real usage of Python data structures
+* Demonstrates manual implementation of:
+
+  * Counting
+  * Grouping
+  * Searching
+* Good foundation for backend/data processing systems
